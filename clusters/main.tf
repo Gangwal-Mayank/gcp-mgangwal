@@ -52,3 +52,16 @@ resource "google_compute_address" "static" {
   address_type = "EXTERNAL"
   region = var.region
 }
+
+resource "google_compute_firewall" "allow-ingress-8443" {
+  name          = "allow-ingress-8443"
+  network       = var.global_network_name
+  direction     = "INGRESS"
+  priority      = 120
+  source_ranges = [var.master_ipv4_cidr_block]
+  allow {
+    protocol = "tcp"
+    ports    = ["8443"]
+  }
+  project = var.project_id 
+}
